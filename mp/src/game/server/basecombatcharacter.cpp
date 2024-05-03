@@ -2101,6 +2101,24 @@ void CBaseCombatCharacter::Weapon_Equip( CBaseCombatWeapon *pWeapon )
 #endif // HL2_DLL
 		GiveAmmo(pWeapon->GetDefaultClip1(), pWeapon->m_iPrimaryAmmoType); 
 	}
+#ifdef NEO
+	// Fix this later properly, this is cope solution
+	else if(pWeapon->m_iClip1 > pWeapon->GetMaxClip1())
+	{
+		pWeapon->m_iClip1 = pWeapon->GetMaxClip1();
+		GiveAmmo( pWeapon->GetDefaultClip1() - pWeapon->GetMaxClip1(), pWeapon->m_iPrimaryAmmoType); 
+	}
+
+	if (pWeapon->GetMaxClip2() == -1)
+	{
+		GiveAmmo(pWeapon->GetDefaultClip2(), pWeapon->m_iSecondaryAmmoType); 
+	}
+	else if(pWeapon->m_iClip2 > pWeapon->GetMaxClip2())
+	{
+		pWeapon->m_iClip2 = pWeapon->GetMaxClip2();
+		GiveAmmo( pWeapon->GetDefaultClip2() - pWeapon->GetMaxClip2(), pWeapon->m_iSecondaryAmmoType); 
+	}
+#elif
 	// If default ammo given is greater than clip
 	// size, fill clips and give extra ammo
 	else if (pWeapon->GetDefaultClip1() >  pWeapon->GetMaxClip1() )
@@ -2124,7 +2142,8 @@ void CBaseCombatCharacter::Weapon_Equip( CBaseCombatWeapon *pWeapon )
 		pWeapon->m_iClip2 = pWeapon->GetMaxClip2();
 		GiveAmmo( (pWeapon->GetDefaultClip2() - pWeapon->GetMaxClip2()), pWeapon->m_iSecondaryAmmoType); 
 	}
-
+#endif
+	
 	pWeapon->Equip( this );
 
 	// Players don't automatically holster their current weapon
