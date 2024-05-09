@@ -80,6 +80,8 @@ void CWeaponMilso::ItemBusyFrame(void)
 
 void CWeaponMilso::ItemPostFrame(void)
 {
+	ProcessAnimationEvents();
+
 	BaseClass::ItemPostFrame();
 
 	if (m_bInReload)

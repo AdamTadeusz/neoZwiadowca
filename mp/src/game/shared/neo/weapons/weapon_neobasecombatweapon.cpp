@@ -239,13 +239,15 @@ void CNEOBaseCombatWeapon::ProcessAnimationEvents(void)
 	if (!m_bLowered && (pOwner->IsSprinting()) && !m_bInReload)
 	{
 		m_bLowered = true;
-		m_flNextPrimaryAttack = gpGlobals->curtime + GetViewModelSequenceDuration();
+		SendWeaponAnim(ACT_VM_IDLE_LOWERED);
+		m_flNextPrimaryAttack = max(gpGlobals->curtime + 0.2, m_flNextPrimaryAttack);
 		m_flNextSecondaryAttack = m_flNextPrimaryAttack;
 	}
 	else if (m_bLowered && !(pOwner->IsSprinting()))
 	{
 		m_bLowered = false;
-		m_flNextPrimaryAttack = gpGlobals->curtime + GetViewModelSequenceDuration();
+		SendWeaponAnim(ACT_VM_IDLE);
+		m_flNextPrimaryAttack = max(gpGlobals->curtime + 0.2, m_flNextPrimaryAttack);
 		m_flNextSecondaryAttack = m_flNextPrimaryAttack;
 	}
 
@@ -253,7 +255,8 @@ void CNEOBaseCombatWeapon::ProcessAnimationEvents(void)
 	{
 		if (gpGlobals->curtime > m_flNextPrimaryAttack)
 		{
-			m_flNextPrimaryAttack = gpGlobals->curtime + GetViewModelSequenceDuration();
+			SendWeaponAnim(ACT_VM_IDLE_LOWERED);
+			m_flNextPrimaryAttack = max(gpGlobals->curtime + 0.2, m_flNextPrimaryAttack);
 			m_flNextSecondaryAttack = m_flNextPrimaryAttack;
 		}
 	}
@@ -261,8 +264,6 @@ void CNEOBaseCombatWeapon::ProcessAnimationEvents(void)
 
 void CNEOBaseCombatWeapon::ItemPostFrame(void)
 {
-	ProcessAnimationEvents();
-
 	CNEO_Player* pOwner = static_cast<CNEO_Player*>(ToBasePlayer(GetOwner()));
 	if (!pOwner)
 		return;

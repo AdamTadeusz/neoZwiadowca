@@ -81,6 +81,8 @@ void CWeaponSRS::ItemBusyFrame()
 
 void CWeaponSRS::ItemPostFrame()
 {
+	ProcessAnimationEvents();
+
 	BaseClass::ItemPostFrame();
 
 	if (m_bInReload)

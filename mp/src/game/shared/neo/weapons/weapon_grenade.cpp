@@ -255,6 +255,8 @@ void CWeaponGrenade::ItemPostFrame(void)
 		}
 	}
 
+	ProcessAnimationEvents();
+
 	BaseClass::ItemPostFrame();
 }
 
