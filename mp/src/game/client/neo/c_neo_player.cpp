@@ -268,8 +268,6 @@ public:
 		panel->SetControlEnabled("autobutton", true);
 		panel->SetControlEnabled("CancelButton", true);
 
-		panel->MoveToFront();
-
 		if (panel->IsKeyBoardInputEnabled())
 		{
 			panel->RequestFocus();
